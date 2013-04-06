@@ -23,10 +23,10 @@ public class FirstRunActivity extends Activity {
         	Toast toast;
         	if(sharedPref.getBoolean("anonymous_login", false) == true) {
         		Log.v("PREF", "Totally have anonymous_login value of true");
-        		toast = Toast.makeText(getApplicationContext(), "Using the app Anonymously", Toast.LENGTH_LONG);
+        		toast = Toast.makeText(getApplicationContext(), R.string.toast_anonymous, Toast.LENGTH_LONG);
         	} else {
         		Log.v("PREF", "Totally have anonymous_login value of false. Should show account_name string");
-        		toast = Toast.makeText(getApplicationContext(), "Signed in as "+sharedPref.getString("account_name", "BUG!"), Toast.LENGTH_LONG);
+        		toast = Toast.makeText(getApplicationContext(), R.string.toast_signedin+sharedPref.getString("account_name", "BUG!"), Toast.LENGTH_LONG);
         	}
         	Log.v("PREF", "Showing toast");
         	toast.show();

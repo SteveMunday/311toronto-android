@@ -10,6 +10,8 @@
     <string name="splash_text_colour">#ffffff</string>
     <string name="splash_login_btn">Log in with an existing account</string>
     <string name="splash_anonymous_btn">Use App Anonymously</string>
+    <string name="toast_anonymous">Using the app anonymously</string>
+    <string name="toast_signedin">Signed in as </string>
     <string name="login_dialog_title">Choose an Account</string>
     <string name="login_no_accounts">No accounts available!</string>
     <string name="login_ok">OK</string>
