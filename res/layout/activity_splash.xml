@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/splash_desc"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:shadowColor="#66000000"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:text="@string/splash_welcome_sentence"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="26dp"
+        android:shadowColor="#66000000"
+        android:shadowDx="0"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        android:text="@string/splash_hello"
+        android:textColor="#ffffff"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/splash_anonymous_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/splash_login_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/splash_login_btn"
+        android:layout_marginBottom="34dp"
+        android:background="#dd444444"
+        android:padding="10dp"
+        android:text="@string/splash_anonymous_btn"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/splash_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/splash_anonymous_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:background="#dd31a4d9"
+        android:padding="10dp"
+        android:text="@string/splash_login_btn"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>
