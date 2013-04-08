@@ -1,13 +1,37 @@
 package com.f3ndot.toronto311;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Locale;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,14 +42,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
-	private static final int SPLASH_CODE = 0;
-
+	private static final String CLIENT_SECRET = "c371af7e278fcbc415a2953c84124fcc764cec8d";
+	public static final String CLIENT_ID = "26c05de8e6a48ae";
+	
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -84,6 +110,8 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
+		
 	}
 
 	@Override
@@ -130,6 +158,8 @@ public class MainActivity extends FragmentActivity implements
 			switch (position) {
 			case 0:
 				fragment = new ReportSectionFragment();
+			
+		        
 				break;
 			default:
 				fragment = new DummySectionFragment();
@@ -200,8 +230,76 @@ public class MainActivity extends FragmentActivity implements
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main_report,
 					container, false);
+
+	        Button pothole_btn = (Button) rootView.findViewById(R.id.report_pothole_type_btn);
+	        pothole_btn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+		        	Log.v("UPLOAD", "Button was tapped!");
+//					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.splash);
+//					Log.v("UPLOAD", "Dimensions of splash is: "+bitmap.getWidth()+"x"+bitmap.getHeight());
+//					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//					bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+
+					new Thread(new Runnable() {
+						public void run() {
+
+				        	
+				        	File image = null;
+				        	Log.v("UPLOAD", "ENV: "+Environment.getExternalStorageDirectory());
+				        	File root = Environment.getExternalStorageDirectory();
+				        	File[] files = root.listFiles();
+				        	for (int i = 0; i < files.length; i++) {
+				        		if(files[i].getName().equals("Wallpapers")) {
+				        			Log.v("UPLOAD", "WALLPAPERS: "+files[i].getAbsolutePath());
+				        			File[] walls = files[i].listFiles();
+				        			Log.v("UPLOAD", "FILE: "+walls[0].getAbsolutePath());
+				        			image = walls[0];
+				        		}
+							}
+				        	
+		
+							URI uri = null;
+							try {
+								uri = new URI("https://api.imgur.com/3/image");
+								Log.v("UPLOAD", "URI set to: "+uri.toString());
+							} catch (URISyntaxException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							HttpClient httpClient = new DefaultHttpClient();
+							HttpPost post = new HttpPost(uri);
+							post.addHeader("Authorization", "Client-ID "+CLIENT_ID);
+							
+							MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+							entity.addPart("image", new FileBody(image));
+							post.setEntity(entity);
+							
+							try {
+								Log.v("UPLOAD", "Executing image upload to: "+uri.toString());
+								HttpResponse resp = httpClient.execute(post);
+								HttpEntity resp_entity = resp.getEntity();
+								Log.v("UPLOAD", "HTTP POST Status Response: "+resp.getStatusLine());
+								Log.v("UPLOAD", "HTTP POST Response: "+EntityUtils.toString(resp_entity));
+							} catch (ClientProtocolException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+		        	    }
+					}).start();
+
+					
+				}
+	        });
+			
 			return rootView;
 		}
+
 	}
+	
 	
 }
